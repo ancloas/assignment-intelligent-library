@@ -3,6 +3,8 @@ from sqlalchemy.orm import relationship, validates
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
+from llm_utils import LLM_Base
+from db_utils import DatabaseManager
 
 Base = declarative_base()
 
@@ -59,7 +61,6 @@ class User(Base, BaseModel):
             raise ValueError("Invalid email format.")
         return email
 
-
 class Book(Base, BaseModel):
     __tablename__ = "books"  # Explicitly declare table name
 
@@ -72,7 +73,49 @@ class Book(Base, BaseModel):
 
     # Establish a relationship to reviews with cascading deletion
     reviews = relationship("Review", back_populates="book", cascade="all, delete-orphan")
-   
+    
+    def __init__(self, title, author, genre, year_published=None, summary=None):
+        self.title = title
+        self.author = author
+        self.genre = genre
+        self.year_published = year_published
+        self.summary = summary
+
+    async def generate_summary(self, llm_model: LLM_Base, db_manager: DatabaseManager):
+        """Generate a book summary using an LLM model and update the book record."""
+        user_query = f"""Summarize following book: \n"""
+        if self.title:
+            user_query += f"title: {self.title}\n"
+        if self.author:
+            user_query += f"Author: {self.author}\n"
+        if self.year_published:
+            user_query += f"Year Published: {self.year_published}\n"
+        
+        prompt = [
+           {
+               "role": "system",
+               "content": (
+                   "You are an expert book consultant with vast knowledge of literature and access to detailed book information. "
+                   "Your task is to generate a concise and engaging summary of the book based on the provided details. "
+                   "Focus on capturing the essence of the story, key themes, and significant aspects without including spoilers.\n\n"
+               )
+           },
+           {
+               "role": "user",
+               "content": (
+                   f"The book details are as follows:\n"
+                   f"{user_query}\n\n"
+                   "Please generate a summary that highlights the core storyline, major themes, and any unique features of the book."
+               )
+           }
+        ]
+       
+               
+        self.summary = await llm_model.generate_response(prompt)
+        # Save or update the book record asynchronously
+        await db_manager.add_or_save(self)
+        
+        return self.summary
 
 class Review(Base, BaseModel):
     __tablename__ = "reviews"  # Explicitly declare table name

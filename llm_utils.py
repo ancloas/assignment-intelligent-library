@@ -2,13 +2,23 @@ from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
 import os
 from typing import Union, List, Dict
+import httpx  # For async requests
+import asyncio
 
 # Load environment variables
 load_dotenv()
 
-class HuggingFaceModel:
+class LLM_Base:
+    def __init__(self):
+        pass
+
+    async def generate_response(self):
+        raise NotImplementedError("Subclasses must implement this method.")
+
+
+class HuggingFaceModel(LLM_Base):
     """
-    Utility class to interact with Hugging Face Inference API.
+    Utility class to interact with Hugging Face Inference API asynchronously.
     """
     def __init__(self, model_name: str, api_key_env_var: str = "Huggingface_api_key"):
         """
@@ -23,7 +33,7 @@ class HuggingFaceModel:
             raise ValueError(f"API key not found in environment variable: {api_key_env_var}")
         self.client = InferenceClient(api_key=self.api_key)
 
-    def generate_response(
+    async def generate_response(
         self, 
         prompt: Union[str, List[Dict[str, str]]], 
         temperature: float = 0.5, 
@@ -64,19 +74,18 @@ class HuggingFaceModel:
         except Exception as e:
             raise RuntimeError(f"Error while generating response: {e}")
 
-# Example usage
-if __name__ == "__main__":
-    # Initialize the model utility
+# Testing the async function
+async def main():
     model_name = "meta-llama/Llama-3.2-3B-Instruct"
     hf_model = HuggingFaceModel(model_name=model_name)
 
     # Example 1: Using a string prompt
     string_prompt = "List five fruits."
     try:
-        response = hf_model.generate_response(string_prompt)
+        response = await hf_model.generate_response(string_prompt)
         print("Response from string prompt:", response)
     except RuntimeError as e:
-        print(e)
+        print("Error:", e)
 
     # Example 2: Using a message-format prompt
     message_prompt = [
@@ -84,7 +93,13 @@ if __name__ == "__main__":
         {"role": "user", "content": "Can you name five fruits for me?"}
     ]
     try:
-        response = hf_model.generate_response(message_prompt)
+        response = await hf_model.generate_response(message_prompt)
         print("Response from message prompt:", response)
     except RuntimeError as e:
-        print(e)
+        print("Error:", e)
+
+# Run the async main function
+if __name__ == "__main__":
+    asyncio.run(main())
+
+
