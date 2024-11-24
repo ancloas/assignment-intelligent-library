@@ -1,0 +1,21 @@
+version: '3.11'
+
+services:
+  app: 'smart library'
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=yourapp.py
+      - FLASK_RUN_HOST=0.0.0.0
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    networks:
+      - app_network
+    restart: unless-stopped
+
+networks:
+  app_network:
+    driver: bridge
