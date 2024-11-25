@@ -112,8 +112,6 @@ pip install -r requirements.txt
 ### 4. Configure Environment Variables
 Create a .env file in the project root directory and add the following:
 ```
-FLASK_APP=yourapp.py
-FLASK_RUN_HOST=0.0.0.0
 HUGGINGFACE_API_KEY=<your_huggingface_api_key>
 POSTGRES_PORT= <port at which postgres sql is hosted>
 POSTGRES_DB= <database name>
