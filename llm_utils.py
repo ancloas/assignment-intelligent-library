@@ -20,7 +20,7 @@ class HuggingFaceModel(LLM_Base):
     """
     Utility class to interact with Hugging Face Inference API asynchronously.
     """
-    def __init__(self, model_name: str, api_key_env_var: str = "Huggingface_api_key"):
+    def __init__(self, model_name: str, api_key_env_var: str = "HUGGINGFACE_API_KEY"):
         """
         Initialize the Hugging Face model utility.
         Args:

@@ -119,6 +119,8 @@ POSTGRES_PORT= <port at which postgres sql is hosted>
 POSTGRES_DB= <database name>
 POSTGRES_USER= <db user name>
 POSTGRES_PASSWORD= <db user password>
+SECRET_KEY= <any string which will act as a secret key>
+
 ```
 
 Replace the above placeholders with actual values:
@@ -134,57 +136,24 @@ quart run
 # Docker Setup
 You can also containerize the application with Docker. This allows the app to be deployed in an isolated environment.
 
-## 1. Build Docker Image
-Use Docker to build the image for the application:
+### Prerequisite
+  DockerDestop: Follow instructions on [DockerDestop Official Page](https://docs.docker.com/desktop/setup/install/windows-install/)
 
-```
-docker build -t smart-library .
-```
-## 2. Run Docker Image
-To run the container and start the application, use the following command:
+## Setup container and run application
+1. Navigate to the the main project directory 'Assignment Intelligent Library'.
+2. Create a .env file and add following content in it.  
+      ```
+      HUGGINGFACE_API_KEY=<your_huggingface_api_key>
+      POSTGRES_PORT= <port at which you want db to be hosted>
+      POSTGRES_DB= <desired db name>
+      POSTGRES_USER= <desired db username>
+      POSTGRES_PASSWORD= <desired db password>
+      SECRET_KEY= <any string which will act as a secret key>
+     ```
 
-```
-docker run -p 5000:5000 --env-file .env smart-library
-```
-This will run the app inside a Docker container, accessible at http://localhost:5000.
+Replace the above placeholders with actual values:
 
------------
-
-# Docker Compose Setup
-For easier management of services and dependencies, use Docker Compose.
-
-## 1. Docker Compose File
-Ensure you have the following docker-compose.yml file in the project root:
-
-yaml
-```
-version: '3.11'
-
-services:
-  app:
-    build: .
-    ports:
-      - "5000:5000"
-    environment:
-      - FLASK_APP=yourapp.py
-      - FLASK_RUN_HOST=0.0.0.0
-    env_file:
-      - .env
-    volumes:
-      - .:/app
-    networks:
-      - app_network
-    restart: unless-stopped
-
-networks:
-  app_network:
-    driver: bridge
-
-```    
-## 2. Start the Application with Docker Compose
-
-Run the following command to start the application using Docker Compose:
-
+2. Run the following command to start the application using Docker Compose:
 bash
 ```
 docker-compose up --build
