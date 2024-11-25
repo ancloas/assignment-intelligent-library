@@ -1,21 +1,37 @@
-version: '3.11'
+version: "3.11"
 
 services:
-  app: 'smart library'
-    build: .
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     environment:
-      - FLASK_APP=yourapp.py
+      - FLASK_APP=app.py
       - FLASK_RUN_HOST=0.0.0.0
-    env_file:
-      - .env
+    env_file: .env
+    depends_on:
+      - db
     volumes:
       - .:/app
-    networks:
-      - app_network
     restart: unless-stopped
+
+  db:
+    image: postgres:13
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
 
 networks:
   app_network:
-    driver: bridge

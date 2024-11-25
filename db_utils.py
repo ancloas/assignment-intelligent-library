@@ -8,10 +8,10 @@ import os
 load_dotenv()
 
 # PostgreSQL Async Database URL (replace with your actual database credentials)
-db_user = os.getenv('DB_USER')
-db_name = os.getenv('DB_NAME')
-db_password = os.getenv('DB_PASSWORD')
-db_port = os.getenv('DB_PORT', 5432)
+db_user = os.getenv('POSTGRES_USER')
+db_name = os.getenv('POSTGRES_DB')
+db_password = os.getenv('POSTGRES_PASSWORD')
+db_port = os.getenv('POSTGRES_PORT', 5432)
 
 DATABASE_URL = f"postgresql+asyncpg://{db_user}:{db_password}@localhost:{db_port}/{db_name}"
 

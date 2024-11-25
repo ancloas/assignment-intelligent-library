@@ -3,3 +3,5 @@
 *.pyc
 models/*
 .vscode
+.ipynb_checkpoints/db_manager-checkpoint.py
+.ipynb_checkpoints/db_manager-checkpoint.py
