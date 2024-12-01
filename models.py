@@ -5,25 +5,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import re
 from llm_utils import LLM_Base
 from db_utils import DatabaseManager
+from base import BaseModel
 
-Base = declarative_base()
 
-class BaseModel:
-    @declared_attr
-    def __tablename__(cls):
-        return cls.__name__.lower() + 's'
-
-    def to_dict(self):
-        """Convert model instance to dictionary."""
-        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
-
-    @classmethod
-    def from_dict(cls, data):
-        """Create model instance from dictionary."""
-        return cls(**data)
-    
-
-class User(Base, BaseModel):
+class User(BaseModel):
     __tablename__ = "users"  # Explicitly declare table name
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -61,7 +46,7 @@ class User(Base, BaseModel):
             raise ValueError("Invalid email format.")
         return email
 
-class Book(Base, BaseModel):
+class Book(BaseModel):
     __tablename__ = "books"  # Explicitly declare table name
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -117,7 +102,7 @@ class Book(Base, BaseModel):
         
         return self.summary
 
-class Review(Base, BaseModel):
+class Review(BaseModel):
     __tablename__ = "reviews"  # Explicitly declare table name
     
     id = Column(Integer, primary_key=True, autoincrement=True)

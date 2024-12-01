@@ -113,7 +113,6 @@ pip install -r requirements.txt
 Create a .env file in the project root directory and add the following:
 ```
 HUGGINGFACE_API_KEY=<your_huggingface_api_key>
-POSTGRES_PORT= <port at which postgres sql is hosted>
 POSTGRES_DB= <database name>
 POSTGRES_USER= <db user name>
 POSTGRES_PASSWORD= <db user password>
@@ -142,7 +141,7 @@ You can also containerize the application with Docker. This allows the app to be
 2. Create a .env file and add following content in it.  
       ```
       HUGGINGFACE_API_KEY=<your_huggingface_api_key>
-      POSTGRES_PORT= <port at which you want db to be hosted>
+      HOST_POSTGRES_PORT= <port exposed to host for db>
       POSTGRES_DB= <desired db name>
       POSTGRES_USER= <desired db username>
       POSTGRES_PASSWORD= <desired db password>

@@ -5,15 +5,17 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Copy the application code into the container
+RUN echo "Copying content from current directory to app"
 COPY . /app
 
 # Install system dependencies and PostgreSQL client
 RUN echo "Updating apt-get and cleaning..." && \
     apt-get update && \
-    apt-get clean
+    apt-get clean 
 
 # Install Python dependencies
 RUN echo "Installing Python dependencies..." && \
+    pip install --upgrade pip &&\ 
     pip install --no-cache-dir -r requirements.txt
 
 # Expose the application port

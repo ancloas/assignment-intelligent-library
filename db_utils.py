@@ -1,9 +1,10 @@
 import asyncio
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy import select, text
 from dotenv import load_dotenv
 import os
+from base import Base
 
 load_dotenv()
 
@@ -11,12 +12,11 @@ load_dotenv()
 db_user = os.getenv('POSTGRES_USER')
 db_name = os.getenv('POSTGRES_DB')
 db_password = os.getenv('POSTGRES_PASSWORD')
-db_port = os.getenv('POSTGRES_PORT', 5432)
+db_port = 5432
+db_host = os.getenv('DB_HOST', 'localhost')
 
-DATABASE_URL = f"postgresql+asyncpg://{db_user}:{db_password}@localhost:{db_port}/{db_name}"
+DATABASE_URL = f"postgresql+asyncpg://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 
-# Base class for ORM models
-Base = declarative_base()
 
 class DatabaseManager:
     def __init__(self, database_url):
@@ -28,6 +28,7 @@ class DatabaseManager:
         async with self.engine.begin() as conn:
             # Create all tables defined in the metadata
             await conn.run_sync(Base.metadata.create_all)
+        print('created tables')
 
     async def add_or_save(self, obj):
         """Add an ORM object to the database."""
