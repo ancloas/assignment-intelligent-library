@@ -30,7 +30,7 @@ services:
   db:
     image: postgres:latest
     ports:
-      - "${HOST_POSTGRES_PORT}:5432" # Fixed the port mapping to use a standard value
+      - "5001:5432" # Fixed the port mapping to use a standard value
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
