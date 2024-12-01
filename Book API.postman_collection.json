@@ -1,11 +1,11 @@
 {
 	"info": {
-		"_postman_id": "c73e2abb-245c-46ef-a562-641cc521f58d",
-		"name": "Book API",
+		"_postman_id": "30b3b0ae-1303-4575-a07e-87155f51966e",
+		"name": "Book API Copy",
 		"description": "Collection for Book API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "30144326",
-		"_collection_link": "https://speeding-zodiac-675035.postman.co/workspace/My-Workspace~fa7eb613-7e00-41c6-8f7e-5116d93f92c6/collection/30144326-c73e2abb-245c-46ef-a562-641cc521f58d?action=share&source=collection_link&creator=30144326"
+		"_collection_link": "https://speeding-zodiac-675035.postman.co/workspace/My-Workspace~fa7eb613-7e00-41c6-8f7e-5116d93f92c6/collection/30144326-30b3b0ae-1303-4575-a07e-87155f51966e?action=share&source=collection_link&creator=30144326"
 	},
 	"item": [
 		{
@@ -21,7 +21,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"username\": \"new_user\", \"password\": \"password123\", \"email\": \"user@example.com\", \"full_name\": \"John Doe\"}"
+					"raw": "{\"username\": \"p_user\", \"password\": \"password123\", \"email\": \"user@example.com\", \"full_name\": \"John Doe\"}"
 				},
 				"url": {
 					"raw": "http://localhost:5000/register",
@@ -50,36 +50,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"username\": \"new_user\", \"password\": \"password123\"}"
+					"raw": "{\"username\": \"p_user\", \"password\": \"password123\"}"
 				},
 				"url": {
-					"raw": "http://localhost:5000/sign-in",
+					"raw": "http://localhost:5000/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
-						"sign-in"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Sign Out User",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:5000/sign-out",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"sign-out"
+						"login"
 					]
 				}
 			},
@@ -98,7 +79,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"title\": \"The Alchemist\", \"author\": \"Paulo Coelho\", \"genre\": \"Fiction\", \"year_published\": 1988}"
+					"raw": "{\"title\": \"It ends with us\", \"author\": \"unkown\", \"genre\": \"Fiction\", \"year_published\": 1980}"
 				},
 				"url": {
 					"raw": "http://localhost:5000/books",
@@ -139,7 +120,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/books/1",
+					"raw": "http://localhost:5000/books/{{book_id}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -147,7 +128,7 @@
 					"port": "5000",
 					"path": [
 						"books",
-						"1"
+						"{{book_id}}"
 					]
 				}
 			},
@@ -166,10 +147,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"title\": \"The Alchemist - Updated\", \"author\": \"Paulo Coelho\", \"genre\": \"Adventure\", \"year_published\": 1988}"
+					"raw": "{\"title\": \"Harry Pottor: Goblet of Fire\", \"author\": \"JK Rowlling\", \"genre\": \"Fantasy\", \"year_published\": 1970}"
 				},
 				"url": {
-					"raw": "http://localhost:5000/books/1",
+					"raw": "http://localhost:5000/books/{{book_id}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -177,19 +158,19 @@
 					"port": "5000",
 					"path": [
 						"books",
-						"1"
+						"{{book_id}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Delete a book by ID",
+			"name": "Retrieve all reviews for a book",
 			"request": {
-				"method": "DELETE",
+				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/books/1",
+					"raw": "http://localhost:5000/books/{{book_id}}/reviews",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -197,7 +178,8 @@
 					"port": "5000",
 					"path": [
 						"books",
-						"1"
+						"{{book_id}}",
+						"reviews"
 					]
 				}
 			},
@@ -216,10 +198,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"user_id\": 123, \"review_text\": \"Amazing book with deep insights.\", \"rating\": 5}"
+					"raw": "{\"review_text\": \"It's magical\", \"rating\": 5}"
 				},
 				"url": {
-					"raw": "http://localhost:5000/books/1/reviews",
+					"raw": "http://localhost:5000/books/{{book_id}}/reviews",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -227,7 +209,7 @@
 					"port": "5000",
 					"path": [
 						"books",
-						"1",
+						"{{book_id}}",
 						"reviews"
 					]
 				}
@@ -235,12 +217,22 @@
 			"response": []
 		},
 		{
-			"name": "Retrieve all reviews for a book",
+			"name": "Generate Summary",
 			"request": {
-				"method": "GET",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "http://localhost:5000/books/1/reviews",
+					"raw": "http://localhost:5000/books/{{book_id}}/generate-summary",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -248,8 +240,27 @@
 					"port": "5000",
 					"path": [
 						"books",
-						"1",
-						"reviews"
+						"{{book_id}}",
+						"generate-summary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recommendations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/recommendations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"recommendations"
 					]
 				}
 			},
@@ -261,7 +272,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/books/1/summary",
+					"raw": "http://localhost:5000/books/{{book_id}}/summary",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -269,8 +280,51 @@
 					"port": "5000",
 					"path": [
 						"books",
-						"1",
+						"{{book_id}}",
 						"summary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a book by ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:5000/books/{{book_id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"books",
+						"{{book_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign Out User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"logout"
 					]
 				}
 			},
